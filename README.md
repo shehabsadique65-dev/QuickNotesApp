@@ -14,32 +14,32 @@ A simple and clean notes application built with Kotlin and Jetpack Compose. This
 ### 1. Main Screen
 When you first open the app, you see a clean, empty state ready for your first note.
 
-![Main Screen](screenshots/Screenshot_20260501_211705.png)
+<img src="screenshots/Screenshot_20260501_211705.png" width="300" alt="Main Screen">
 
 ### 2. Adding a New Note
 Clicking the floating "+" button opens a dialog where you can enter a title and description, and pick a color for your note.
 
-![Add Note](screenshots/Screenshot_20260501_211737.png)
+<img src="screenshots/Screenshot_20260501_211737.png" width="300" alt="Add Note">
 
 ### 3. Your Notes List
 Once you've added a few notes, they appear in a beautiful list with their selected colors and the date they were created.
 
-![Notes List](screenshots/Screenshot_20260501_215505.png)
+<img src="screenshots/Screenshot_20260501_215505.png" width="300" alt="Notes List">
 
 ### 4. Editing a Note
 Tapping on any note allows you to change its content or color instantly.
 
-![Edit Note](screenshots/Screenshot_20260501_214509.png)
+<img src="screenshots/Screenshot_20260501_214509.png" width="300" alt="Edit Note">
 
 ### 5. Smart Search
 The search bar at the top lets you filter through your notes in real-time by searching for keywords in the title or body.
 
-![Search Feature](screenshots/Screenshot_20260501_214427.png)
+<img src="screenshots/Screenshot_20260501_214427.png" width="300" alt="Search Feature">
 
 ### 6. Deleting Notes
 Each note has a delete icon to quickly remove notes you no longer need.
 
-![Delete Note](screenshots/Screenshot_20260501_215530.png)
+<img src="screenshots/Screenshot_20260501_215530.png" width="300" alt="Delete Note">
 
 ## Built With
 - Kotlin
