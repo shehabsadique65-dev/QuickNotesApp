@@ -1,0 +1,18 @@
+Quick Notes App - Project Write-up
+
+How to Run the App:
+1. Open Android Studio and select "Open" to browse to the project folder.
+2. Wait for the Gradle sync to complete (make sure you have an internet connection for dependencies).
+3. Connect your Android phone via USB (with USB Debugging on) or use the built-in Emulator.
+4. Press the green Play icon or 'Run 'app'' from the top menu.
+
+Features & Logic:
+- Search: I implemented search using a StateFlow that combines the notes list with a search query. It filters titles and bodies as you type, ignoring case.
+- Delete: Tapping the trash icon on a note card triggers a function in the ViewModel that filters out the note with that specific ID.
+- Edit: I added an 'editingNote' state. When a card is clicked, it populates the dialog with that note's data, and saving updates the existing item instead of creating a new one.
+
+Extending with Room:
+The app currently uses a list in the ViewModel, so notes disappear when the app process is killed. To add Room:
+1. Define a Room Entity for the Note class and a DAO for the CRUD operations.
+2. Use a Repository pattern to handle the data flow between the DB and the ViewModel.
+3. Replace the 'MutableStateFlow' in the ViewModel with a Flow from the Room database to ensure data persists across app restarts.
