@@ -2,38 +2,42 @@ package com.example.testnoteapp
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class NotesViewModel : ViewModel() {
-    private val _notes = MutableStateFlow<List<Note>>(emptyList())
-    private val _searchQuery = MutableStateFlow("")
-    val searchQuery = _searchQuery.asStateFlow()
+class NotesViewModel(private val repo: NoteRepository) : ViewModel() {
+    private val _search = MutableStateFlow("")
+    val searchQuery = _search.asStateFlow()
 
-    val notes: StateFlow<List<Note>> = combine(_notes, _searchQuery) { notes, query ->
-        if (query.isBlank()) notes
-        else notes.filter { it.title.contains(query, ignoreCase = true) || it.body.contains(query, ignoreCase = true) }
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val notes = _search.flatMapLatest { q ->
+        if (q.isEmpty()) repo.allNotes
+        else repo.searchNotes(q)
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
-    fun addNote(title: String, body: String, color: Int) {
-        val sdf = SimpleDateFormat("MMM dd, yyyy", Locale.getDefault())
-        val currentDate = sdf.format(Date())
-        val newNote = Note(title = title, body = body, color = color, date = currentDate)
-        _notes.value = listOf(newNote) + _notes.value
-    }
-
-    fun updateNote(id: Long, title: String, body: String, color: Int) {
-        _notes.value = _notes.value.map {
-            if (it.id == id) it.copy(title = title, body = body, color = color) else it
+    fun addNote(t: String, c: String, clr: String) {
+        viewModelScope.launch {
+            val time = SimpleDateFormat("MMM dd, h:mm a", Locale.getDefault()).format(Date())
+            repo.insert(NoteEntity(title = t, content = c, color = clr, createdAt = time))
         }
     }
 
-    fun deleteNote(note: Note) {
-        _notes.value = _notes.value.filter { it.id != note.id }
+    fun deleteNote(n: NoteEntity) {
+        viewModelScope.launch {
+            repo.delete(n)
+        }
     }
 
-    fun onSearchQueryChanged(query: String) {
-        _searchQuery.value = query
+    fun updateNote(n: NoteEntity) {
+        viewModelScope.launch {
+            repo.update(n)
+        }
+    }
+
+    fun onSearchQueryChanged(q: String) {
+        _search.value = q
     }
 }
